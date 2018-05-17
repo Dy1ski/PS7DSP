@@ -103,6 +103,39 @@ const NTree& NTree<T, N>::detachNTree(unsigned int aIndex)
 template<class T, int N>
 void NTree<T, N>::traverseDepthFirst(const TreeVisitor<T>& aVisitor) const
 {
-	// 337
+	if (!isEmpty())
+	{
+		aVisitor.preVisit(key());
+		left().traverseDepthFirst(aVisitor);
+		aVisitor.inVisit(key());
+		right().traversalDepthFirst(aVisitor);
+		aVisitor.postVisit(key());
+	}
+}
+template<class T, int N>
+void NTree<T, N>::traverseBreadthFirst(const TreeVisitor<T>& aVisitor) const
+{
+	DynamicQueue <const bTree<T>* > lQueue;
+	if (!isEmpty())
+	{
+		lQueue.enqueue(this);
+	}
+	while (!lQueue.isEmpty())
+	{
+		const BTreee<T>& head = *lQueue.top();
+		lQueue.dequeue();
 
+		if (!head.isEmpty())
+		{
+			aVisitor.visit(head.key());
+		}
+		if (!head.left().isEmpty())
+		{
+			lQueue.enqueue(&head.left());
+		}
+		if (!head.right().isEmpty())
+		{
+			lQueue.enqueue(&head.right());
+		}
+	}
 }
